@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import Modal from "../NotePreview/Modal";
+import Modal from "../../../../components/NotePreview/Modal";
 import { fetchNoteById } from "@/lib/api";
-import type { Note } from "../../types/note";
+import type { Note } from "../../../../types/note";
 import css from "./NotePreview.module.css";
 
 type NotePreviewProps = {

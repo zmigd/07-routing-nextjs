@@ -17,7 +17,7 @@ export default function Modal({ children }: ModalProps) {
     <div className={css.backdrop} onClick={handleClose}>
       <div className={css.modal} onClick={(e) => e.stopPropagation()}>
         {children}
-        <button onClick={handleClose}>Close</button>
+        <button onClick={handleClose} className={css.backBtn}>Close</button>
       </div>
     </div>
   );

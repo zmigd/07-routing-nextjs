@@ -1,7 +1,7 @@
 // app/@modal/(.)notes/[id]/page.tsx
 'use client';
 
-import NotePreview from "@/components/NotePreview/NotePreview";
+import NotePreview from "./NotePreview";
 import { use } from "react";
 
 type NoteModalProps = {
