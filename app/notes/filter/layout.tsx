@@ -14,7 +14,7 @@ export default function FilterLayout({ children }: FilterLayoutProps) {
 
       <div className={css.notesWrapper}>
         <main className={css.mainContent}>
-          {children} {/* Тут буде NotesClient для вибраного тегу */}
+          {children} 
         </main>
       </div>
     </div>

@@ -25,7 +25,7 @@ export default function NoteList({ notes }: NoteListProps) {
   };
 
   const handleOpenModal = (id: string) => {
-    router.push(`/notes/${id}`); // перехоплений маршрут відкриє модалку
+    router.push(`/notes/${id}`); 
   };
 
   return (
@@ -42,19 +42,19 @@ export default function NoteList({ notes }: NoteListProps) {
           <div className={css.footer}>
             <span className={css.tag}>{note.tag}</span>
 
-            {/* Лінк на повну сторінку нотатки */}
+            
             <Link
               href={`/notes/${note.id}`}
               className={`${css.tag} ${css["tag-link"]}`}
-              onClick={(e) => e.stopPropagation()} // Зупиняємо відкриття модалки
+              onClick={(e) => e.stopPropagation()} 
             >
               View details
             </Link>
 
-            {/* Кнопка Delete */}
+           
             <button
               onClick={(e) => {
-                e.stopPropagation(); // Зупиняємо відкриття модалки
+                e.stopPropagation(); 
                 handleDeleteNote(note.id);
               }}
               className={css.button}
