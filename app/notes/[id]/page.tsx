@@ -1,19 +1,16 @@
-import { getSingleNote } from '@/lib/api';
+import { getSingleNote } from "@/lib/api";
 
 type Props = {
   params: { id: string };
 };
 
-const NotePage = async ({ params }: Props) => {
-  const { id } = params;
-  const note = await getSingleNote(id);
+export default async function NotePage({ params }: Props) {
+  const note = await getSingleNote(params.id);
 
   return (
     <div>
-      <h1>{note.title}</h1>
+      <h2>{note.title}</h2>
       <p>{note.content}</p>
     </div>
   );
-};
-
-export default NotePage;
+}

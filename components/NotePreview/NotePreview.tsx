@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import styles from "./NotePreview.module.css";
-import type { Note } from "../../types/note"; // Імпорт типу
-import { getSingleNote } from "@/lib/api";
+import Modal from "../NotePreview/Modal";
+import { fetchNoteById } from "@/lib/api";
+import type { Note } from "../../types/note";
+import css from "./NotePreview.module.css";
 
 type NotePreviewProps = {
   noteId: string;
@@ -12,25 +12,32 @@ type NotePreviewProps = {
 
 export default function NotePreview({ noteId }: NotePreviewProps) {
   const [note, setNote] = useState<Note | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
-    getSingleNote(noteId).then((data) => setNote(data));
+    setNote(null);
+    fetchNoteById(noteId).then(setNote);
   }, [noteId]);
-
-  const handleClose = () => router.back();
 
   if (!note) return null;
 
   return (
-    <div className={styles.backdrop} onClick={handleClose}>
-      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={handleClose}>
-          &times;
-        </button>
-        <h2 className={styles.title}>{note.title}</h2>
-        <p className={styles.content}>{note.content}</p>
+    <Modal>
+      <div className={css.container} key={noteId}>
+        <div className={css.item}>
+          <div className={css.header}>
+            <h2>{note.title}</h2>
+            <span className={css.date}>
+              {note.updatedAt ? new Date(note.updatedAt).toLocaleDateString() : ""}
+            </span>
+          </div>
+
+          <div className={css.content}>{note.content}</div>
+
+          <div>
+            <span className={css.tag}>{note.tag}</span>
+          </div>
+        </div>
       </div>
-    </div>
+    </Modal>
   );
 }

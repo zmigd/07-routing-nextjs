@@ -22,15 +22,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal, // Додаємо пропс для модального вікна
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode; // Отримуємо модальне вікно з @modal
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body >
+      <body>
         <TanStackProvider>
           <Header />
           {children}
+          {modal}  {/* Рендеримо модальне вікно, якщо воно є */}
           <Footer />
         </TanStackProvider>
       </body>
