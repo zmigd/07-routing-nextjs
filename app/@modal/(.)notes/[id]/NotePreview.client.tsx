@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import Modal from "../../../../components/NotePreview/Modal";
 import { fetchNoteById } from "@/lib/api";
-import type { Note } from "../../../../types/note";
 import css from "./NotePreview.module.css";
 
 type NotePreviewProps = {
@@ -11,31 +11,68 @@ type NotePreviewProps = {
 };
 
 export default function NotePreview({ noteId }: NotePreviewProps) {
-  const [note, setNote] = useState<Note | null>(null);
+  const router = useRouter();
 
-  useEffect(() => {
-    setNote(null);
-    fetchNoteById(noteId).then(setNote);
-  }, [noteId]);
+  const {
+    data: note,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["note", noteId],
+    queryFn: () => fetchNoteById(noteId),
+    refetchOnMount: true,
+  });
 
-  if (!note) return null;
+  const handleClose = () => {
+    router.back();
+  };
+
+  if (isLoading) {
+    return (
+      <Modal onClose={handleClose}>
+        <div className={css.loader}>Loading note...</div>
+      </Modal>
+    );
+  }
+
+  if (isError || !note) {
+    return (
+      <Modal onClose={handleClose}>
+        <div className={css.error}>
+          <p>Failed to load note details.</p>
+          <button className={css.retryBtn} onClick={() => refetch()}>
+            Try again
+          </button>
+        </div>
+      </Modal>
+    );
+  }
 
   return (
-    <Modal>
+    <Modal onClose={handleClose}>
       <div className={css.container} key={noteId}>
+        <button className={css.backBtn} onClick={handleClose}>
+          ✕
+        </button>
+
         <div className={css.item}>
           <div className={css.header}>
             <h2>{note.title}</h2>
             <span className={css.date}>
-              {note.updatedAt ? new Date(note.updatedAt).toLocaleDateString() : ""}
+              {note.createdAt
+                ? new Date(note.createdAt).toLocaleDateString()
+                : ""}
             </span>
           </div>
 
           <div className={css.content}>{note.content}</div>
 
-          <div>
-            <span className={css.tag}>{note.tag}</span>
-          </div>
+          {note.tag && (
+            <div>
+              <span className={css.tag}>{note.tag}</span>
+            </div>
+          )}
         </div>
       </div>
     </Modal>
